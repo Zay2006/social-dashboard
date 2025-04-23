@@ -10,7 +10,6 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
-  TooltipProps,
 } from 'recharts';
 
 // Types
