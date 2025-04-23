@@ -80,30 +80,6 @@ Not applicable in this version – dummy data is stored as JSON objects.
 **Integration Method:** Planned via API  
 **Model Performance Metrics:** TBD  
 
-### Key Components and Code Snippets  
-
-#### Component 1: DashboardCard  
-Displays platform-specific stats like followers, likes, shares.
-
-```tsx
-<Card>
-  <CardHeader>Instagram</CardHeader>
-  <CardContent>
-    <h3>Followers: 10,230</h3>
-    <p>Likes: 3,020</p>
-  </CardContent>
-</Card>
-```
-
-#### Component 2: LineChart  
-Visualizes growth trends over time using dummy data.
-
-```tsx
-<LineChart data={instagramStats}>
-  <Line type="monotone" dataKey="followers" stroke="#8884d8" />
-</LineChart>
-```
-
 #### AI Integration  
 Planned in different iteration.
 
