@@ -1,4 +1,4 @@
-# Social Media Dashboard
+t # Social Media Dashboard
 
 ## Overview
 A modern social media analytics dashboard built with Next.js and Recharts. Track your social media performance across multiple platforms in one place.
