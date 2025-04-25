@@ -17,6 +17,14 @@ export interface User {
   };
 }
 
+export interface Comment {
+  id: string;
+  userId: string;
+  content: string;
+  createdAt: string;
+  likes: number;
+}
+
 export interface Post {
   id: string;
   userId: string;
@@ -24,8 +32,9 @@ export interface Post {
   content: string;
   likes: number;
   shares: number;
-  comments: number;
+  comments: Comment[];
   createdAt: string;
+  image?: string;
 }
 
 export const mockUsers: User[] = [
@@ -144,7 +153,22 @@ export const mockPosts: Post[] = [
     content: 'Just launched a new feature for our dashboard! Check it out at launchpadphilly.com 🚀',
     likes: 45,
     shares: 12,
-    comments: 8,
+    comments: [
+      {
+        id: "comment-1",
+        userId: "2",
+        content: "This looks amazing! Cant wait to try it out 🎉",
+        createdAt: "2024-04-22T15:35:00Z",
+        likes: 5
+      },
+      {
+        id: "comment-2",
+        userId: "3",
+        content: "Great work! The UI is so clean 👏",
+        createdAt: "2024-04-22T15:40:00Z",
+        likes: 3
+      }
+    ],
     createdAt: '2024-04-22T15:30:00Z'
   },
   {
@@ -154,7 +178,15 @@ export const mockPosts: Post[] = [
     content: 'Another day, another bug squashed 🐛 #coding #webdev',
     likes: 89,
     shares: 0,
-    comments: 15,
+    comments: [
+      {
+        id: "comment-3",
+        userId: "1",
+        content: "Love your debugging process! What tools do you use?",
+        createdAt: "2024-04-22T12:20:00Z",
+        likes: 7
+      }
+    ],
     createdAt: '2024-04-22T12:15:00Z'
   },
   {
@@ -164,7 +196,22 @@ export const mockPosts: Post[] = [
     content: 'New video: Building a Web3 Game in 24 Hours! Like and subscribe 🎮',
     likes: 156,
     shares: 45,
-    comments: 23,
+    comments: [
+      {
+        id: "comment-4",
+        userId: "4",
+        content: "Amazing video! The time-lapse coding session was epic",
+        createdAt: "2024-04-21T19:00:00Z",
+        likes: 12
+      },
+      {
+        id: "comment-5",
+        userId: "1",
+        content: "Would love to see a tutorial on the game mechanics",
+        createdAt: "2024-04-21T19:15:00Z",
+        likes: 8
+      }
+    ],
     createdAt: '2024-04-21T18:45:00Z'
   },
   {
@@ -174,7 +221,15 @@ export const mockPosts: Post[] = [
     content: 'Latest UI design inspiration board: Minimalist Dashboard Designs',
     likes: 67,
     shares: 34,
-    comments: 5,
+    comments: [
+      {
+        id: "comment-6",
+        userId: "2",
+        content: "These designs are so inspiring! Saved for later ❤️",
+        createdAt: "2024-04-21T09:30:00Z",
+        likes: 4
+      }
+    ],
     createdAt: '2024-04-21T09:20:00Z'
   }
 ];

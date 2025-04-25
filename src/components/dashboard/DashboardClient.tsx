@@ -10,6 +10,12 @@ const initialStats = {
   activeUsers: 2500,
   newPosts: 250,
   activeNow: 1000,
+  changes: {
+    totalUsers: 0,
+    activeUsers: 0,
+    newPosts: 0,
+    activeNow: 0,
+  }
 };
 
 export function DashboardClient() {
@@ -22,7 +28,7 @@ export function DashboardClient() {
     setIsClient(true);
   }, []);
 
-  // Update data every 15 minutes (average of 10-30 minutes)
+  // Update data on mount and every minute
   useEffect(() => {
     if (!isClient) return;
 
@@ -32,13 +38,15 @@ export function DashboardClient() {
       try {
         setCurrentStats(generateCurrentStats());
       } finally {
-        setIsUpdating(false);
+        setTimeout(() => setIsUpdating(false), 500); // Show updating indicator for at least 500ms
       }
     };
 
+    // Update immediately on mount
     updateData();
 
-    const interval = setInterval(updateData, 15 * 60 * 1000); // 15 minutes in milliseconds
+    // Then update every minute
+    const interval = setInterval(updateData, 60 * 1000);
 
     return () => clearInterval(interval);
   }, [isClient]);
@@ -55,22 +63,30 @@ export function DashboardClient() {
         <div className="rounded-lg border p-4 shadow-sm">
           <h3 className="text-lg font-medium">Total Users</h3>
           <p className="mt-2 text-3xl font-bold">{currentStats.totalUsers.toLocaleString()}</p>
-          <p className="text-sm text-green-600">+2.5% from last month</p>
+          <p className={`text-sm ${currentStats.changes.totalUsers >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {currentStats.changes.totalUsers > 0 ? '+' : ''}{currentStats.changes.totalUsers}% from last update
+          </p>
         </div>
         <div className="rounded-lg border p-4 shadow-sm">
           <h3 className="text-lg font-medium">Active Users</h3>
           <p className="mt-2 text-3xl font-bold">{currentStats.activeUsers.toLocaleString()}</p>
-          <p className="text-sm text-green-600">+3.2% from last month</p>
+          <p className={`text-sm ${currentStats.changes.activeUsers >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {currentStats.changes.activeUsers > 0 ? '+' : ''}{currentStats.changes.activeUsers}% from last update
+          </p>
         </div>
         <div className="rounded-lg border p-4 shadow-sm">
           <h3 className="text-lg font-medium">New Posts</h3>
           <p className="mt-2 text-3xl font-bold">{currentStats.newPosts.toLocaleString()}</p>
-          <p className="text-sm text-green-600">+1.8% from last month</p>
+          <p className={`text-sm ${currentStats.changes.newPosts >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {currentStats.changes.newPosts > 0 ? '+' : ''}{currentStats.changes.newPosts}% from last update
+          </p>
         </div>
         <div className="rounded-lg border p-4 shadow-sm">
           <h3 className="text-lg font-medium">Active Now</h3>
           <p className="mt-2 text-3xl font-bold">{currentStats.activeNow.toLocaleString()}</p>
-          <p className="text-sm text-green-600">+4.1% from last hour</p>
+          <p className={`text-sm ${currentStats.changes.activeNow >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {currentStats.changes.activeNow > 0 ? '+' : ''}{currentStats.changes.activeNow}% from last update
+          </p>
         </div>
       </div>
 
