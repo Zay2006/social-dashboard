@@ -106,6 +106,18 @@ export default function PostsPage() {
                     width={40}
                     height={40}
                     className="rounded-full"
+                    onError={(e) => {
+                      // Fallback to a simple colored circle with initials
+                      const target = e.target as HTMLImageElement;
+                      target.onerror = null; // Prevent infinite loop
+                      target.style.backgroundColor = `hsl(${user.name.length * 30}, 70%, 50%)`;
+                      target.style.display = 'flex';
+                      target.style.alignItems = 'center';
+                      target.style.justifyContent = 'center';
+                      target.style.color = 'white';
+                      target.style.fontWeight = 'bold';
+                      target.innerHTML = user.name.charAt(0).toUpperCase();
+                    }}
                   />
                   <div>
                     <h2 className="font-semibold">{user.name}</h2>
@@ -168,6 +180,17 @@ export default function PostsPage() {
                                   width={32}
                                   height={32}
                                   className="rounded-full"
+                                  onError={(e) => {
+                                    const target = e.target as HTMLImageElement;
+                                    target.onerror = null;
+                                    target.style.backgroundColor = `hsl(${commentUser.name.length * 30}, 70%, 50%)`;
+                                    target.style.display = 'flex';
+                                    target.style.alignItems = 'center';
+                                    target.style.justifyContent = 'center';
+                                    target.style.color = 'white';
+                                    target.style.fontWeight = 'bold';
+                                    target.innerHTML = commentUser.name.charAt(0).toUpperCase();
+                                  }}
                                 />
                                 <div className="flex-1">
                                   <div className="flex items-center gap-2">

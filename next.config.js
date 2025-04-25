@@ -11,6 +11,8 @@ const nextConfig = {
     ],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    minimumCacheTTL: 3600,
+    responseLimit: false,
   },
 }
 
