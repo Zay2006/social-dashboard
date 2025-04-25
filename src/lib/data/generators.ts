@@ -1,4 +1,4 @@
-import { Comment, Post, User, mockUsers } from './mockData';
+import { Comment, Post, mockUsers } from './mockData';
 
 const postContents = [
   "Just launched our new feature! 🚀 Check it out and let me know what you think!",

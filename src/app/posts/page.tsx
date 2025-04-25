@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from 'react';
+import Image from 'next/image';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Comment, Post, mockPosts, mockUsers } from '@/lib/data/mockData';
-import { Twitter, Instagram, Linkedin, Heart, Share2, MessageCircle, Youtube, Send } from 'lucide-react';
+import { Twitter, Instagram, Linkedin, Heart, Share2, MessageCircle, Send } from 'lucide-react';
 import { generateRandomPost } from '@/lib/data/generators';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,7 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 export default function PostsPage() {
   const [posts, setPosts] = useState<Post[]>(mockPosts);
   const [newComment, setNewComment] = useState('');
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+
   
   const handleLike = (postId: string) => {
     setPosts(posts.map(post => {
@@ -51,7 +52,6 @@ export default function PostsPage() {
     }));
 
     setNewComment('');
-    setSelectedPost(null);
   };
 
   const loadMorePosts = () => {
@@ -100,11 +100,12 @@ export default function PostsPage() {
             <div key={post.id} className="rounded-lg border p-6 space-y-4 hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={user.avatar}
                     alt={user.name}
-                    className="w-10 h-10 rounded-full"
+                    width={40}
+                    height={40}
+                    className="rounded-full"
                   />
                   <div>
                     <h2 className="font-semibold">{user.name}</h2>
@@ -115,9 +116,11 @@ export default function PostsPage() {
               </div>
               <p className="text-lg">{post.content}</p>
               {post.image && (
-                <img
+                <Image
                   src={post.image}
                   alt="Post content"
+                  width={800}
+                  height={400}
                   className="rounded-lg w-full max-h-96 object-cover"
                 />
               )}
@@ -141,7 +144,7 @@ export default function PostsPage() {
                     <DialogTrigger asChild>
                       <button
                         className="flex items-center gap-1 hover:text-green-500 transition-colors"
-                        onClick={() => setSelectedPost(post)}
+
                       >
                         <MessageCircle className="w-4 h-4" />
                         <span>{post.comments.length.toLocaleString()}</span>
@@ -159,10 +162,12 @@ export default function PostsPage() {
 
                             return (
                               <div key={comment.id} className="flex gap-3">
-                                <img
+                                <Image
                                   src={commentUser.avatar}
                                   alt={commentUser.name}
-                                  className="w-8 h-8 rounded-full"
+                                  width={32}
+                                  height={32}
+                                  className="rounded-full"
                                 />
                                 <div className="flex-1">
                                   <div className="flex items-center gap-2">
