@@ -9,6 +9,8 @@ const nextConfig = {
         pathname: '/7.x/**',
       },
     ],
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 }
 
