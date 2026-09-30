@@ -1,115 +1,35 @@
-# 🚀 Social Media Dashboard
+# Social Media Dashboard
 
-### 📁 Project Overview  
-**Industry:** Technology  
-**Developer:** Zay2006  
-**Completion Date:** 05/12/2025  
-**GitHub:** [Zay2006/social-dashboard](https://github.com/Zay2006/social-dashboard.git)  
-**Trello Board:** [Assignment Checkbook](https://trello.com/b/eY1788bs/assignment-checkbook)  
-**Live Demo:** [View Dashboard](https://social-dashboard-delta.vercel.app)
+A single view of engagement, reach and audience growth across six social platforms, built with
+Next.js, React and Recharts.
 
----
+**Live demo:** https://social-dashboard-delta.vercel.app
 
-## 🧠 Business Problem
-
-### ❗ Problem Statement  
-Social media teams often juggle multiple platforms, each with its own analytics system. This leads to fragmented data, wasted time, and inconsistent reporting. A lack of real-time insight and centralized tools hampers data-driven decision-making.
-
-### 👥 Target Users  
-- Social media managers  
-- Digital marketing teams  
-- Small to mid-sized businesses  
-These users need **simple, centralized, and insightful** dashboards to optimize social strategies.
-
-### ⚠️ Existing Limitations  
-Current tools are either:
-- Platform-specific  
-- Not updated in real-time  
-- Lacking AI-powered insights  
-- Complex and expensive
+> **This is a front-end demo.** Every figure on screen is generated locally from a seeded
+> pseudo-random generator. There is no backend, no database and no authentication, and the
+> dashboard is not connected to any social platform's API. See
+> [Status and roadmap](#status-and-roadmap) for what is and is not implemented.
 
 ---
 
-## 💡 Solution Overview
+## Screens
 
-### 🔍 Project Description  
-The Social Media Dashboard offers a **central hub** to track performance across all major social channels in real time. With interactive charts, smart comparisons, and a clean UI, it streamlines insights into engagement, reach, and audience growth—all powered by React, Next.js, and Recharts.
-
-### ✨ Key Features
-- 🔁 **Real-time analytics**
-- 📊 **Interactive visualizations** (engagement, reach, growth)
-- 🧭 **Cross-platform performance comparison**
-- 🌙 **Dark mode**
-- 📱 **Mobile-responsive UI**
-
-### 🌟 Value Proposition  
-This project simplifies multi-platform analytics into **one beautiful, real-time dashboard**—saving time and giving teams actionable insight at a glance.
-
-### 🤖 AI Implementation (Planned)  
-Upcoming features may include:
-- Content strategy suggestions  
-- Sentiment analysis  
-- Performance forecasting using OpenAI APIs  
-
-### 🛠️ Tech Stack  
-- **Frontend:** Next.js, React, ShadcN UI  
-- **Styling:** Tailwind CSS  
-- **Backend:** Next.js API Routes  
-- **Database & Auth:** *TBD*  
-- **AI Services:** *Planned – OpenAI API*  
-- **Deployment:** Vercel  
-- **Charts:** Recharts
+| Route                     | What it shows                                                            |
+| ------------------------- | ------------------------------------------------------------------------ |
+| `/`                       | Four headline metrics plus engagement, reach, growth and platform charts |
+| `/posts`                  | Post feed with likes, shares, threaded comments and pagination           |
+| `/users`                  | Connected accounts, their handles per platform and follower counts       |
+| `/notifications`          | Activity feed — likes, comments, shares, follows and mentions            |
+| `/settings/account`       | Profile details, connected platforms, privacy preferences                |
+| `/settings/notifications` | Delivery channels and per-event notification preferences                 |
+| `/settings/appearance`    | Light / dark / system theme                                              |
 
 ---
 
-## ⚙️ Technical Implementation
+## Getting started
 
-### 🧩 Architecture Overview  
-- Modular React components for insights, charts, and cards  
-- Data fetched via API routes and rendered with Recharts  
+Requires Node 20.9 or newer (see `.nvmrc`).
 
-### 🗃️ Database Schema (Planned)  
-- Users  
-- Platform access tokens  
-- Analytics logs  
-
----
-
-## 🖥️ UI & UX
-
-### 🧭 User Journey
-1. Log in  
-2. Connect accounts (Twitter, Instagram, etc.)  
-3. View real-time dashboard  
-4. Analyze trends via filters  
-5. Receive insights & suggestions  
-
-### 📌 Key Screens
-- **Dashboard Overview** – aggregated metrics  
-- **Insights Panel** – AI-powered future recommendations *(coming soon)*  
-
-### 📱 Responsive & Accessible  
-- Tailwind-powered mobile UI  
-- High contrast, keyboard-navigable components
-
----
-
-## 🧪 Testing & QA
-
-### ✅ Testing Approach  
-- Manual testing  
-- Unit tests for UI components  
-- Integration testing planned  
-
-### 🔍 Known Issues  
-- AI modules not yet integrated  
-- Some platforms (e.g., TikTok, YouTube) pending support
-
----
-
-## 🚀 Deployment
-
-### 🔧 Build Process  
 ```bash
 git clone https://github.com/Zay2006/social-dashboard.git
 cd social-dashboard
@@ -117,64 +37,133 @@ npm install
 npm run dev
 ```
 
-### 🧪 CI/CD  
-- Auto-deployed to Vercel on GitHub push  
-- Preview URLs for branches
+The dev server runs at http://localhost:3000.
+
+### Scripts
+
+| Script                 | Purpose                               |
+| ---------------------- | ------------------------------------- |
+| `npm run dev`          | Dev server with Turbopack             |
+| `npm run build`        | Production build                      |
+| `npm start`            | Serve the production build            |
+| `npm run lint`         | ESLint                                |
+| `npm run typecheck`    | `tsc --noEmit`                        |
+| `npm test`             | Vitest unit and component tests       |
+| `npm run test:watch`   | Vitest in watch mode                  |
+| `npm run format`       | Prettier                              |
+| `npm run format:check` | Prettier in check mode (what CI runs) |
+
+CI runs formatting, lint, typecheck, tests, a production build and `npm audit --audit-level=high`
+on every pull request.
 
 ---
 
-## 🔮 Future Enhancements
+## Tech stack
 
-- 🧠 AI-driven content planning  
-- 📆 Scheduling + post performance forecasting  
-- 🌐 Support for YouTube, TikTok, Pinterest  
-- 🏎️ Performance optimization + caching  
-
----
-
-## 📚 Lessons Learned
-
-### 🚧 Challenges  
-- Navigating API limitations for various platforms  
-- Finding good UI libraries for data-heavy interfaces  
-
-### 💡 Insights  
-- Tailwind speeds up UI builds  
-- Recharts is flexible and developer-friendly  
-
-### ✅ Wins  
-- Clean, fast setup  
-- Reusable components & scalable architecture  
-
-### 👀 What’s Next  
-- AI rollout  
-- Better onboarding UX  
+- **Framework** — Next.js 15 (App Router), React 19
+- **Language** — TypeScript in `strict` mode
+- **Styling** — Tailwind CSS 3 with shadcn-style design tokens
+- **Components** — hand-rolled shadcn/ui primitives over Radix (`Dialog`, `Slot`)
+- **Charts** — Recharts
+- **Icons** — Lucide
+- **Testing** — Vitest, Testing Library, jsdom
 
 ---
 
-## 📅 Project Management
+## Architecture
 
-- 🛠️ **Timeline:** 4–6 weeks (currently in week 2)  
-- 📋 **Tools Used:** GitHub, Trello, Vercel, Figma, Recharts Docs  
-
----
-
-## 🏁 Conclusion  
-The **Social Media Dashboard** turns the chaos of multi-platform metrics into clarity. It’s a modern, sleek, and soon-to-be AI-powered platform that empowers marketing teams to strategize smarter, faster, and with more confidence.
-
----
-
-## 🧰 Appendix
-
-### 🖥️ Local Setup  
-```bash
-# Clone the repository
-git clone https://github.com/Zay2006/social-dashboard.git
-
-# Install dependencies
-cd social-dashboard
-npm install
-
-# Start development server
-npm run dev
 ```
+src/
+  app/
+    layout.tsx              Root layout: fonts, theme bootstrap, skip link
+    error.tsx               Root error boundary
+    not-found.tsx           404
+    globals.css             Design tokens and base layer
+    (dashboard)/
+      layout.tsx            Shared chrome for every dashboard route
+      loading.tsx           Streaming skeleton
+      page.tsx              Dashboard overview
+      posts/ users/ notifications/ settings/
+  components/
+    layout/                 Shell, sidebar navigation, theme toggle
+    dashboard/              Stat cards and charts
+    posts/                  Feed, post card, comments dialog
+    notifications/          Activity feed
+    settings/               Account, notification and appearance settings
+    ui/                     Button, Card, Dialog, Input, Switch, Avatar, TimeStamp
+  lib/
+    platforms.ts            Single source of truth for label, icon and colours
+    format.ts               Date and number formatting
+    storage.ts              localStorage that cannot throw
+    id.ts                   Collision-free ids
+    theme/                  Theme provider and pre-paint bootstrap script
+    data/                   Seeded generators and fixtures
+```
+
+A few decisions worth knowing about if you are extending this:
+
+**Design tokens are HSL triplets, not colour functions.** `tailwind.config.ts` consumes them as
+`hsl(var(--token))`, so a variable holding a full `oklch(...)` or `rgb(...)` value produces an
+invalid declaration and silently drops the utility. Keep `globals.css` to bare
+`<hue> <saturation>% <lightness>%` values.
+
+**Generated data is seeded.** `lib/data/random.ts` provides a deterministic generator. Seeding
+component state with `Math.random()` gives the server and the client different values for the same
+render, which is a hydration mismatch. Anything rendered during SSR must come from a fixed seed.
+
+**Dates are formatted in two passes.** Prerendered HTML carries the server's timezone, so
+`lib/format.ts` separates timezone-independent formatters (safe during SSR) from locale-dependent
+ones. The `<TimeStamp>` component renders UTC first and upgrades to the visitor's timezone after
+mount.
+
+**Chart colours are selected in JavaScript.** Recharts writes colours as SVG presentation
+attributes, which cannot resolve `var()`, so `lib/platforms.ts` carries an explicit light/dark pair
+per platform.
+
+---
+
+## Accessibility
+
+- Keyboard reachable throughout, with a skip link to the main content
+- Colour choices clear 4.5:1 contrast in both themes; verified with axe-core
+- Toggles are `role="switch"` with `aria-checked` and an associated label
+- Charts expose an accessible name and description, and Recharts' keyboard layer is enabled
+- Navigation marks the active route with `aria-current="page"`
+- The mobile drawer traps focus, closes on `Escape` and locks background scroll
+- Motion respects `prefers-reduced-motion`
+
+---
+
+## Status and roadmap
+
+**Implemented**
+
+- Responsive layout down to 360px, with the sidebar collapsing into a drawer
+- Light, dark and system themes, applied before first paint so there is no flash
+- Four interactive charts that stay consistent with each other and with the sidebar figures
+- Post feed with optimistic likes, shares, comments and pagination
+- Notification feed with read/unread state, and separate notification preferences
+- Unit and component test coverage for the data layer, formatting and interactive components
+
+**Not implemented**
+
+- Real platform integrations. There are no API routes and no OAuth flow; the "connected accounts"
+  on the settings page are fixtures.
+- Authentication. There is no sign-in, and settings changes live in component state only — they
+  are not persisted anywhere.
+- A database. Users, posts and notifications are fixtures in `src/lib/data`.
+- AI features. Content suggestions, sentiment analysis and forecasting are ideas, not code.
+- End-to-end tests.
+
+**Next up, roughly in order**
+
+1. Persist settings, starting with `localStorage` and moving to a real store
+2. Add API routes backed by a database, and move the generators behind them
+3. OAuth per platform, then replace the fixtures with live metrics
+4. End-to-end coverage for the feed and settings flows
+
+---
+
+## Licence
+
+MIT — see [LICENSE](LICENSE).
