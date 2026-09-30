@@ -1,90 +1,101 @@
 "use client";
 
 import {
-  AreaChart,
   Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-  Legend,
-} from 'recharts';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+} from "recharts";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { PLATFORMS, PLATFORM_LIST } from "@/lib/platforms";
+import { useTheme } from "@/lib/theme/ThemeContext";
+import { formatCompactNumber, formatNumber } from "@/lib/format";
+import { followerGrowthCeiling, type DashboardSeries } from "@/lib/data/metrics";
 
-import { useEffect, useState } from 'react';
-import {
-  generateRandomEngagementData,
-  generateRandomFollowerGrowthData,
-  generateRandomPlatformPerformance
-} from '@/lib/data/generators';
+interface ChartsProps {
+  series: DashboardSeries;
+}
 
-const platformColors = {
-  twitter: '#1DA1F2',
-  instagram: '#E4405F',
-  linkedin: '#0A66C2',
-  youtube: '#FF0000',
-  tiktok: '#000000',
-  pinterest: '#E60023',
-} as const;
+/**
+ * Recharts writes colours as SVG presentation attributes, which cannot resolve
+ * `var(--token)`, so the palette has to be selected in JavaScript from the
+ * resolved theme rather than inherited from CSS.
+ */
+function useChartPalette() {
+  const { resolvedTheme } = useTheme();
+  const dark = resolvedTheme === "dark";
+  return {
+    dark,
+    accent: dark ? "#818cf8" : "#4f46e5",
+    reached: dark ? "#818cf8" : "#4f46e5",
+    remaining: dark ? "#3f3f46" : "#d4d4d8",
+    tooltip: {
+      backgroundColor: dark ? "hsl(240 6% 8%)" : "#ffffff",
+      border: `1px solid ${dark ? "hsl(240 3.7% 18%)" : "hsl(240 5.9% 90%)"}`,
+      borderRadius: "0.5rem",
+      color: dark ? "hsl(0 0% 98%)" : "hsl(240 10% 3.9%)",
+      fontSize: "0.8125rem",
+    } satisfies React.CSSProperties,
+    platform: (id: keyof typeof PLATFORMS) => PLATFORMS[id].chartColor[dark ? "dark" : "light"],
+  };
+}
 
-const COLORS = ['#0088FE', '#CCCCCC'];
+const AXIS_MARGIN = { top: 8, right: 16, left: 0, bottom: 0 };
 
-export default function Charts() {
-  const [engagementData, setEngagementData] = useState(generateRandomEngagementData());
-  const [followerGrowthData, setFollowerGrowthData] = useState(generateRandomFollowerGrowthData());
-  const [platformPerformanceData, setPlatformPerformanceData] = useState(generateRandomPlatformPerformance());
-  const [followersPieData, setFollowersPieData] = useState([
-    { name: 'Followers', value: Math.floor(Math.random() * 50000) + 20000 },
-    { name: 'Non-Followers', value: Math.floor(Math.random() * 100000) + 50000 },
-  ]);
+export function Charts({ series }: ChartsProps) {
+  const palette = useChartPalette();
+  const growthCeiling = followerGrowthCeiling(series.followerGrowth);
+  const { followers, total } = series.audienceReach;
+  const reachPercent = Math.round((followers / total) * 100);
 
-  useEffect(() => {
-    // Update data every minute
-    const interval = setInterval(() => {
-      setEngagementData(generateRandomEngagementData());
-      setFollowerGrowthData(generateRandomFollowerGrowthData());
-      setPlatformPerformanceData(generateRandomPlatformPerformance());
-      setFollowersPieData([
-        { name: 'Followers', value: Math.floor(Math.random() * 50000) + 20000 },
-        { name: 'Non-Followers', value: Math.floor(Math.random() * 100000) + 50000 },
-      ]);
-    }, 60000);
+  const reachData = [
+    { name: "Reached", value: followers },
+    { name: "Not yet reached", value: Math.max(0, total - followers) },
+  ];
 
-    return () => clearInterval(interval);
-  }, []);
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+    <div className="grid gap-4 lg:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle>Engagement Overview</CardTitle>
-          <CardDescription>Total engagement across all platforms</CardDescription>
+          <CardTitle className="text-base">Engagement Overview</CardTitle>
+          <CardDescription>Total monthly engagement across all platforms</CardDescription>
         </CardHeader>
-        <CardContent className="h-[300px]">
+        <CardContent className="chart-surface h-[280px]">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
-              data={engagementData}
-              margin={{
-                top: 10,
-                right: 30,
-                left: 0,
-                bottom: 0,
-              }}
+              data={series.engagement}
+              margin={AXIS_MARGIN}
+              accessibilityLayer
+              title="Engagement Overview"
+              desc={`Monthly engagement from ${series.engagement[0]?.month} to ${
+                series.engagement[series.engagement.length - 1]?.month
+              }.`}
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="month" tickLine={false} />
+              <YAxis tickFormatter={formatCompactNumber} tickLine={false} width={44} />
+              <Tooltip
+                contentStyle={palette.tooltip}
+                formatter={(value: number) => [formatNumber(value), "Engagements"]}
+              />
               <Area
                 type="monotone"
                 dataKey="total"
-                stroke="#8884d8"
-                fill="#8884d8"
+                stroke={palette.accent}
+                fill={palette.accent}
+                fillOpacity={0.2}
+                strokeWidth={2}
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -93,95 +104,136 @@ export default function Charts() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Audience Reach</CardTitle>
-          <CardDescription>Percentage of total potential audience reached</CardDescription>
+          <CardTitle className="text-base">Audience Reach</CardTitle>
+          <CardDescription>
+            {formatNumber(followers)} of {formatNumber(total)} addressable accounts reached
+          </CardDescription>
         </CardHeader>
-        <CardContent className="h-[300px]">
+        <CardContent className="chart-surface relative h-[280px]">
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
+            <PieChart
+              title="Audience Reach"
+              desc={`${reachPercent}% of the addressable audience has been reached.`}
+            >
               <Pie
-                data={followersPieData}
+                data={reachData}
                 cx="50%"
                 cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-                fill="#8884d8"
-                paddingAngle={5}
+                innerRadius={72}
+                outerRadius={96}
+                paddingAngle={2}
                 dataKey="value"
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                stroke="none"
+                isAnimationActive={false}
               >
-                {followersPieData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
+                <Cell fill={palette.reached} />
+                <Cell fill={palette.remaining} />
               </Pie>
-              <Tooltip />
+              <Tooltip
+                contentStyle={palette.tooltip}
+                formatter={(value: number, name) => [formatNumber(value), name]}
+              />
             </PieChart>
           </ResponsiveContainer>
+          {/* A centred label reads better than per-slice labels, which
+              overflowed the card at narrow widths. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center"
+          >
+            <span className="text-3xl font-bold tabular-nums">{reachPercent}%</span>
+            <span className="text-xs text-muted-foreground">reached</span>
+          </div>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Follower Growth</CardTitle>
-          <CardDescription>Year-to-date follower growth by platform</CardDescription>
+          <CardTitle className="text-base">Follower Growth</CardTitle>
+          <CardDescription>Cumulative followers by platform, year to date</CardDescription>
         </CardHeader>
-        <CardContent className="h-[300px]">
+        <CardContent className="chart-surface h-[280px]">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
-              data={followerGrowthData}
-              margin={{
-                top: 10,
-                right: 30,
-                left: 0,
-                bottom: 0,
-              }}
+            {/* Lines rather than six translucent overlapping areas, which were
+                unreadable, and an axis domain derived from the data instead of a
+                hardcoded 6000 that clipped the taller series. */}
+            <LineChart
+              data={series.followerGrowth}
+              margin={AXIS_MARGIN}
+              accessibilityLayer
+              title="Follower Growth"
+              desc="Cumulative follower count per platform for each month of the year."
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis domain={[0, 6000]} ticks={[0, 1500, 3000, 4500, 6000]} />
-              <Tooltip />
-              <Legend />
-              {Object.keys(platformColors).map((platform) => (
-                <Area
-                  key={platform}
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="month" tickLine={false} />
+              <YAxis
+                domain={[0, growthCeiling]}
+                tickFormatter={formatCompactNumber}
+                tickLine={false}
+                width={44}
+              />
+              <Tooltip
+                contentStyle={palette.tooltip}
+                formatter={(value: number, name) => [
+                  formatNumber(value),
+                  PLATFORMS[name as keyof typeof PLATFORMS]?.label ?? name,
+                ]}
+              />
+              <Legend
+                formatter={(value) => PLATFORMS[value as keyof typeof PLATFORMS]?.label ?? value}
+              />
+              {PLATFORM_LIST.map((platform) => (
+                <Line
+                  key={platform.id}
                   type="monotone"
-                  dataKey={platform}
-                  stroke={platformColors[platform as keyof typeof platformColors]}
-                  fill={platformColors[platform as keyof typeof platformColors]}
-                  fillOpacity={0.3}
+                  dataKey={platform.id}
+                  stroke={palette.platform(platform.id)}
+                  strokeWidth={2}
+                  dot={false}
                 />
               ))}
-            </AreaChart>
+            </LineChart>
           </ResponsiveContainer>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Platform Performance</CardTitle>
+          <CardTitle className="text-base">Platform Performance</CardTitle>
           <CardDescription>Current follower count by platform</CardDescription>
         </CardHeader>
-        <CardContent className="h-[300px]">
+        <CardContent className="chart-surface h-[280px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
-              data={platformPerformanceData}
-              margin={{
-                top: 20,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
+              data={series.platformPerformance}
+              margin={{ ...AXIS_MARGIN, bottom: 8 }}
+              accessibilityLayer
+              title="Platform Performance"
+              desc="Current follower count for each connected platform."
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="platform" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="followers" fill="#8884d8">
-                {platformPerformanceData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={platformColors[entry.platform.toLowerCase() as keyof typeof platformColors]}
-                  />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis
+                dataKey="platform"
+                // interval={0} stops Recharts from silently dropping labels when
+                // the card is narrow, which left half the bars unlabelled.
+                interval={0}
+                tickLine={false}
+                tickFormatter={(value: string) =>
+                  PLATFORMS[value as keyof typeof PLATFORMS]?.label ?? value
+                }
+                tick={{ fontSize: 11 }}
+              />
+              <YAxis tickFormatter={formatCompactNumber} tickLine={false} width={44} />
+              <Tooltip
+                contentStyle={palette.tooltip}
+                formatter={(value: number) => [formatNumber(value), "Followers"]}
+                labelFormatter={(value: string) =>
+                  PLATFORMS[value as keyof typeof PLATFORMS]?.label ?? value
+                }
+              />
+              <Bar dataKey="followers" radius={[4, 4, 0, 0]}>
+                {series.platformPerformance.map((entry) => (
+                  <Cell key={entry.platform} fill={palette.platform(entry.platform)} />
                 ))}
               </Bar>
             </BarChart>
