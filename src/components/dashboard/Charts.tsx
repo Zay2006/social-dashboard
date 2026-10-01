@@ -96,6 +96,7 @@ export function Charts({ series }: ChartsProps) {
                 fill={palette.accent}
                 fillOpacity={0.2}
                 strokeWidth={2}
+                isAnimationActive={false}
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -192,6 +193,7 @@ export function Charts({ series }: ChartsProps) {
                   stroke={palette.platform(platform.id)}
                   strokeWidth={2}
                   dot={false}
+                  isAnimationActive={false}
                 />
               ))}
             </LineChart>
@@ -233,7 +235,7 @@ export function Charts({ series }: ChartsProps) {
                   PLATFORMS[value as keyof typeof PLATFORMS]?.label ?? value
                 }
               />
-              <Bar dataKey="followers" radius={[4, 4, 0, 0]}>
+              <Bar dataKey="followers" radius={[4, 4, 0, 0]} isAnimationActive={false}>
                 {series.platformPerformance.map((entry) => (
                   <Cell key={entry.platform} fill={palette.platform(entry.platform)} />
                 ))}
