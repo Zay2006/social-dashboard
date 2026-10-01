@@ -111,10 +111,7 @@ export function Charts({ series }: ChartsProps) {
         </CardHeader>
         <CardContent className="chart-surface relative h-[280px]">
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart
-              title="Audience Reach"
-              desc={`${reachPercent}% of the addressable audience has been reached.`}
-            >
+            <PieChart>
               <Pie
                 data={reachData}
                 cx="50%"
@@ -126,8 +123,13 @@ export function Charts({ series }: ChartsProps) {
                 stroke="none"
                 isAnimationActive={false}
               >
-                <Cell fill={palette.reached} />
-                <Cell fill={palette.remaining} />
+                {reachData.map((slice) => (
+                  <Cell
+                    key={slice.name}
+                    fill={slice.name === "Reached" ? palette.reached : palette.remaining}
+                    aria-label={`${slice.name}: ${formatNumber(slice.value)}`}
+                  />
+                ))}
               </Pie>
               <Tooltip
                 contentStyle={palette.tooltip}

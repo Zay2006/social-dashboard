@@ -54,16 +54,16 @@ export function AccountSettings() {
           <CardDescription>How you appear to the rest of your team.</CardDescription>
         </CardHeader>
         <CardContent>
-          <dl className="grid gap-4 sm:grid-cols-2">
+          <ul className="grid gap-4 sm:grid-cols-2">
             {PROFILE_FIELDS.map(({ icon: Icon, label, value, href }) => (
-              <div key={label} className="flex items-start gap-2">
+              <li key={label} className="flex items-start gap-2">
                 <Icon
                   className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground"
                   aria-hidden="true"
                 />
                 <div className="min-w-0">
-                  <dt className="text-xs text-muted-foreground">{label}</dt>
-                  <dd className="truncate text-sm">
+                  <p className="text-xs text-muted-foreground">{label}</p>
+                  <p className="truncate text-sm">
                     {href ? (
                       <a href={href} className="hover:underline">
                         {value}
@@ -71,11 +71,11 @@ export function AccountSettings() {
                     ) : (
                       value
                     )}
-                  </dd>
+                  </p>
                 </div>
-              </div>
+              </li>
             ))}
-          </dl>
+          </ul>
         </CardContent>
       </Card>
 
@@ -103,7 +103,7 @@ export function AccountSettings() {
                     <span className="text-xs text-muted-foreground">
                       Last synced <TimeStamp value={account.lastSync} relative />
                     </span>
-                    <span className="rounded-full bg-success/15 px-2 py-0.5 text-xs font-medium text-success">
+                    <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200">
                       Connected
                     </span>
                   </span>

@@ -56,26 +56,20 @@ export default function UsersPage() {
                   )}
                 </ul>
 
-                <dl className="flex justify-between border-t pt-3 text-sm text-muted-foreground">
-                  <div>
-                    <dt className="sr-only">Followers</dt>
-                    <dd>
-                      <span className="font-medium text-foreground">
-                        {formatNumber(user.followers)}
-                      </span>{" "}
-                      followers
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="sr-only">Following</dt>
-                    <dd>
-                      <span className="font-medium text-foreground">
-                        {formatNumber(user.following)}
-                      </span>{" "}
-                      following
-                    </dd>
-                  </div>
-                </dl>
+                <p className="flex justify-between border-t pt-3 text-sm text-muted-foreground">
+                  <span>
+                    <span className="font-medium text-foreground">
+                      {formatNumber(user.followers)}
+                    </span>{" "}
+                    followers
+                  </span>
+                  <span>
+                    <span className="font-medium text-foreground">
+                      {formatNumber(user.following)}
+                    </span>{" "}
+                    following
+                  </span>
+                </p>
                 <p className="text-xs text-muted-foreground">
                   Joined {formatDateUtc(user.joinedDate)}
                 </p>

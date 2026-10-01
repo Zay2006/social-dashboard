@@ -91,24 +91,26 @@ export function SidebarNav({ breakdown, onNavigate }: SidebarNavProps) {
                       <path d="M4 6l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </summary>
-                  <dl className="ml-6 mt-1 space-y-1 py-1 text-xs text-muted-foreground">
-                    <div className="flex justify-between gap-2">
-                      <dt>Followers</dt>
-                      <dd className="font-medium text-foreground">
+                  <ul className="ml-6 mt-1 space-y-1 py-1 text-xs text-muted-foreground">
+                    <li className="flex justify-between gap-2">
+                      <span>Followers</span>
+                      <span className="font-medium text-foreground">
                         {formatNumber(stats.followers)}
-                      </dd>
-                    </div>
-                    <div className="flex justify-between gap-2">
-                      <dt>Posts this week</dt>
-                      <dd className="font-medium text-foreground">{formatNumber(stats.posts)}</dd>
-                    </div>
-                    <div className="flex justify-between gap-2">
-                      <dt>Engagement rate</dt>
-                      <dd className="font-medium text-foreground">
+                      </span>
+                    </li>
+                    <li className="flex justify-between gap-2">
+                      <span>Posts this week</span>
+                      <span className="font-medium text-foreground">
+                        {formatNumber(stats.posts)}
+                      </span>
+                    </li>
+                    <li className="flex justify-between gap-2">
+                      <span>Engagement rate</span>
+                      <span className="font-medium text-foreground">
                         {stats.engagementRate.toFixed(1)}%
-                      </dd>
-                    </div>
-                  </dl>
+                      </span>
+                    </li>
+                  </ul>
                 </details>
               </li>
             );
